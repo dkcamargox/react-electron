@@ -2,10 +2,20 @@
   "name": "react-eletron",
   "version": "0.1.0",
   "private": true,
+  "author": {
+    "name": "dkcamargo",
+    "email": "camargo.douglas@icloud.com",
+    "url": "https://github.com/dkcamargox"
+  },
+  "repository": "https://github.com/dkcamargox/react-electron.git",
+  "homepage": "./",
+  "main": "public/electron.js",
+  "license": "MIT",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "electron-is-dev": "^1.2.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1"
@@ -14,10 +24,24 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "dev": "concurrently \"yarn start\" \"wait-on http://localhost:3000 && electron public/electron.js\"",
+    "postinstall": "electron-builder install-app-deps",
+    "pre-dist": "yarn build",
+    "dist": "electron-builder -w"
+  
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "build": {
+    "appId": "dkcamargox.react-electron",
+    "productName": "ReactApp",
+    "copyright": "Copyright © 2019 Douglas Kauã Camargo",
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
   },
   "browserslist": {
     "production": [
@@ -30,5 +54,15 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  
+  "devDependencies": {
+    "@rescripts/cli": "^0.0.14",
+    "@rescripts/rescript-env": "^0.0.12",
+    "concurrently": "^5.2.0",
+    "electron": "^9.0.0",
+    "electron-builder": "^22.6.1",
+    "typescript": "^3.9.2",
+    "wait-on": "^5.0.0"
   }
 }
