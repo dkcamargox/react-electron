@@ -28,8 +28,7 @@
     "eject": "react-scripts eject",
     "dev": "concurrently \"yarn start\" \"wait-on http://localhost:3000 && electron public/electron.js\"",
     "postinstall": "electron-builder install-app-deps",
-    "pre-dist": "yarn build",
-    "dist": "electron-builder -w"
+    "dist": "concurrently \"yarn build\" \"electron-builder -w\""
   },
   "eslintConfig": {
     "extends": "react-app"
