@@ -1,14 +1,15 @@
 const electron = require('electron');
-const { ProductionServer } = require('../src/productionServer');
 const { app } = electron;
 const { BrowserWindow } = electron;
-
 
 
 /**
  * checa se é produção ou desenvolvimento
  */
 const isDev = require('electron-is-dev');
+
+const { ProductionServer } = require('../src/productionServer');
+
 let mainWindow;
 const productionServer = new ProductionServer(3000); // botar no .env
 
@@ -16,7 +17,6 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    icon: __dirname + '\\..\\assets\\icon.png',
     webPreferences: {
       nodeIntegration: true,
     },
@@ -26,8 +26,8 @@ function createWindow() {
     /**
      * inicia o servidor só se for produção
      */
-    productionServer.startServer();
-    }
+  }
+  productionServer.startServer();
     mainWindow.loadURL(`http://localhost:${3000}`); //puxar do .env tambem
 
 
