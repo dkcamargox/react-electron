@@ -2,6 +2,7 @@
   "name": "react-eletron",
   "version": "0.1.0",
   "private": true,
+  "description": "just a newbie trying to put react and electron together",
   "author": {
     "name": "dkcamargo",
     "email": "camargo.douglas@icloud.com",
@@ -16,6 +17,8 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "electron-is-dev": "^1.2.0",
+    "express": "^4.17.1",
+    "path": "^0.12.7",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
@@ -27,8 +30,10 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "dev": "concurrently \"yarn start\" \"wait-on http://localhost:3000 && electron public/electron.js\"",
+    "electron-start": "electron .",
     "postinstall": "electron-builder install-app-deps",
-    "dist": "concurrently \"yarn build\" \"electron-builder -w\""
+    "pre-dist": "yarn build",
+    "dist": "electron-builder -w"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -40,6 +45,9 @@
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true
+    },
+    "directories": {
+      "buildResources": "assets"
     }
   },
   "browserslist": {
