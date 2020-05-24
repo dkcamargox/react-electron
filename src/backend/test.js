@@ -1,5 +1,15 @@
 const controller = require('./controllers/ProductController');
+const { migrate } = require('./database/migrator');
 
-controller.getAllProducts(2)
-.then(products => console.log(products))
-.catch(err => console.log(err));
+
+
+migrate()
+    .then(() => {
+        controller.getAllProducts()
+            .then(products => console.log(products))
+            .catch(err => console.log(err));
+    })
+    .catch(err => {
+        console.log(err)
+    });
+
