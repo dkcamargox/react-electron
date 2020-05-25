@@ -1,8 +1,17 @@
 import React, { Component }  from 'react';
 import { Link } from 'react-router-dom';
 import './styles.css';
-
+import connection from '../../connection';
 export default class Product extends Component {
+
+    async  getOneProduct(id) {
+        const product = await connection('products')
+        .select('*')
+        .where('id', id);
+
+        return(product); 
+    }
+
     render() {
         return (
             <div className="productInfo">

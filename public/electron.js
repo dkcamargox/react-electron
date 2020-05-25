@@ -1,6 +1,8 @@
 const electron = require('electron');
 const { app } = electron;
 const { BrowserWindow } = electron;
+const path = require('path');
+const knexMigrate = require('knex-migrate');
 
 
 /**
@@ -12,6 +14,11 @@ const { ProductionServer } = require('../src/productionServer');
 
 let mainWindow;
 const productionServer = new ProductionServer(3000); // botar no .env
+
+async function migrate() { 
+  const knexFilePath = path.resolve(__dirname, '..', 'knexfile');
+  await knexMigrate('up', { knexfile: knexFilePath }, () => {});
+}
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -26,8 +33,8 @@ function createWindow() {
     /**
      * inicia o servidor só se for produção
      */
+    productionServer.startServer();
   }
-  productionServer.startServer();
     mainWindow.loadURL(`http://localhost:${3000}`); //puxar do .env tambem
 
 
@@ -53,6 +60,7 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
   if (mainWindow === null) {
+    migrate();
     createWindow();
   }
 });
