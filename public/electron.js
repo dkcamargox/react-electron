@@ -12,12 +12,18 @@ const isDev = require('electron-is-dev');
 
 const { ProductionServer } = require('../src/productionServer');
 
+migrate();
 let mainWindow;
 const productionServer = new ProductionServer(3000); // botar no .env
 
 async function migrate() { 
   const knexFilePath = path.resolve(__dirname, '..', 'knexfile');
-  await knexMigrate('up', { knexfile: knexFilePath }, () => {});
+  const migrationsFilePath = path.resolve(__dirname, '..', 'src', 'migrations'); 
+  const pending = await knexMigrate('pending', { knexfile: knexFilePath, migrations: migrationsFilePath }, () => {});
+
+  if ( pending > 0 ) {
+      await knexMigrate('up', { knexfile: knexFilePath, migrations: migrationsFilePath  }, () => {});
+  }
 }
 
 function createWindow() {
@@ -60,7 +66,6 @@ app.on('window-all-closed', () => {
 
 app.on('activate', () => {
   if (mainWindow === null) {
-    migrate();
     createWindow();
   }
 });

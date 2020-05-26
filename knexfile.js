@@ -1,6 +1,6 @@
 // Update with your config settings.
 const path = require('path');
-const databasePath = path.resolve(__dirname, 'data.sqlite');
+const databasePath = path.resolve(__dirname, 'database', 'data.sqlite');
 module.exports = {
 
   development: {
