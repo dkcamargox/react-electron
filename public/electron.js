@@ -17,11 +17,17 @@ let mainWindow;
 const productionServer = new ProductionServer(3000); // botar no .env
 
 async function migrate() { 
+  /**
+   * path to the knex and migrations file respectivaly
+   */
   const knexFilePath = path.resolve(__dirname, '..', 'knexfile');
   const migrationsFilePath = path.resolve(__dirname, '..', 'database', 'migrations'); 
+  /**
+   * number of pending migrations
+   */
   const pending = await knexMigrate('pending', { knexfile: knexFilePath, migrations: migrationsFilePath }, () => {});
 
-  if ( pending > 0 ) {
+  if ( pending.length > 0 ) {
       await knexMigrate('up', { knexfile: knexFilePath, migrations: migrationsFilePath  }, () => {});
   }
 }
