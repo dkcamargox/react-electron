@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 import './styles.css';
-import connection from '../../connection';
+const { ipcRenderer: ipc } = window.require('electron');
+
 
 
 export default class Main extends Component {
@@ -12,49 +13,66 @@ export default class Main extends Component {
     }
     
     componentDidMount() {
-        this.loadProducts();
+        this.mounted = true;
+        this.loadProducts(1);
     }
 
-    async  getAllProducts(page = 1) {
-        const products = await connection('products')
-        .select('*')
-        .paginate({
-            perPage: 10,
-            currentPage: page
-        });
+    
+    loadProducts = async ( page ) => {
         
-        return(products);
-    }
-
-    loadProducts = async ( page = 1 ) => {
-        const  response = await this.getAllProducts()
-            .then(products => (products))
-            .catch(err => console.log(err));
-        this.setState({
-            products: response.data,
-            productInfo: response.pagination,
-            page
+        
+        ipc.on('get-all-paginated-response', (event, response) => {
+            const { data, productInfo } = response;
+            
+            this.setState({
+                products: data,
+                productInfo,
+                page
+            });
         })
+        
+        ipc.send('get-all-paginated', page);
     }
     
+    nextPage = ( ) => {
+        const { page, productInfo } = this.state;
+        
+        if (page === productInfo.pages) return;
+        const pageNumber = page+1;
+        this.loadProducts(pageNumber);
+    };
+    
+    prevPage = ( ) => {
+        const { page } = this.state;
+        
+        if (page === 1) return;
+        
+        const pageNumber = page-1;
+        this.loadProducts(pageNumber);
+    };
+    
     render () {
-        const {products } = this.state;
-
+        const { products, productInfo, page } = this.state;
+        
         return(
             <div className="product-list">
-                {products.map(product => (
-                    <article key={product._id}>
+                {products.map((product, i) => (
+                    <article className={product.id} key={i}>
                         <strong>{product.title}</strong>
                         <p>{product.description}</p>
-                        <Link to={`/products/${product._id}`}> Acessar</Link>
+                        <Link to={`/products/${product.id}`}> Acessar</Link>
                     </article> 
                 ))}
-
+                
                 <div className="actions">
-                    <button>Anterior</button>
-                    <button>Próximo</button>
+                    <button disabled={page===1} onClick={this.prevPage}>Anterior</button>
+                    <button disabled={page===productInfo.pages} onClick={this.nextPage}>Próxima</button>
                 </div>
             </div>
         );
+    }
+
+    componentWillUnmount() {
+        ipc.removeAllListeners();
     }
 }
