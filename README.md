@@ -6,3 +6,4 @@
 * yarn r-build
 * yarn e-build
 * inside the dist there's the installer for windows, and inside the dist/win-unpacked there's the ReactApp.exe
+'''
