@@ -7,13 +7,11 @@
 
 # testing
 /coverage
-*.test.js
+
 # production
 /build
 /dist
 
-# sqlite3
-*.sqlite
 
 # misc
 .DS_Store
