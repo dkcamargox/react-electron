@@ -16,28 +16,25 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "better-sqlite3": "^7.0.1",
+    "electron-better-ipc": "^1.0.1",
     "electron-is-dev": "^1.2.0",
     "express": "^4.17.1",
-    "knex": "^0.21.1",
-    "knex-migrate": "^1.7.4",
-    "knex-paginate": "^1.2.1",
     "path": "^0.12.7",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1",
-    "sqlite3": "^4.2.0"
+    "react-scripts": "3.4.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "r-start": "react-scripts start",
+    "r-build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev": "concurrently \"yarn start\" \"wait-on http://localhost:3000 && electron public/electron.js\"",
-    "electron-start": "electron .",
-    "postinstall": "electron-builder install-app-deps",
-    "pre-dist": "yarn build",
-    "dist": "electron-builder -w"
+    "dev": "concurrently \"yarn r-start\" \"wait-on http://localhost:3000 && electron public/electron.js\"",
+    "e-start": "electron .",
+    "post-install": "electron-builder install-app-deps",
+    "e-build": "electron-builder -w"
   },
   "eslintConfig": {
     "extends": "react-app"
